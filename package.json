@@ -14,5 +14,15 @@
     "mathematics"
   ],
   "author": "Jerome T.K. Covington",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint-config-standard-jsdoc": "^0.3.2",
+    "husky": "^0.14.3",
+    "mocha": "^5.1.1",
+    "standard": "^11.0.1"
+  },
+  "dependencies": {
+    "promptly": "^3.0.3"
+  }
 }
