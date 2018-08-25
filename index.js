@@ -10,7 +10,7 @@ const OPERATORS = {
 
 // State Array with members of shape `{operator: <string>, suffix: <number>}`
 // representing methods guessed.
-const guesses = []
+let guesses = []
 
 // State Object with shape `{operator: <string>, suffix: <number>}`
 // representing method that has been learnt.
@@ -51,7 +51,7 @@ function makeGuess ({ input, output }) {
       guesses.push({ operator: OPERATORS.add, suffix: output - input })
       guesses.push({ operator: OPERATORS.multiply, suffix: output / input })
     } else {
-      guesses.filter(guess => {
+      guesses = guesses.filter(guess => {
         /* eslint-disable-next-line no-eval */
         return eval(`${input} ${guess.operator} ${guess.suffix} === ${output}`)
       })
