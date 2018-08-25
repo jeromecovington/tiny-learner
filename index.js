@@ -16,6 +16,9 @@ let guesses = []
 // representing method that has been learnt.
 const learntMethod = {}
 
+// State representing function learned.
+let learntFunction
+
 /**
  * Prompts first for a number representing input, then for a number representing
  * output.
@@ -96,6 +99,26 @@ function makeGuess ({ input, output }) {
 function learn ({ operator, suffix }) {
   learntMethod.operator = operator
   learntMethod.suffix = suffix
+
+  return {
+    operator,
+    suffix
+  }
+}
+
+/**
+ * Affirms learnt function.
+ *
+ * @param {Object} object - Parameter object.
+ * @param {string} object.operator - String representing operation.
+ * @param {number} object.suffix - The suffix for the method.
+ *
+ * @returns {string} Object with shape `{operator: <string>, suffix: <number>}`
+ * confirming learnt mathematical method.
+ */
+function learnFunction ({ operator, suffix }) {
+  /* eslint-disable-next-line no-new-func */
+  learntFunction = new Function('input', `return input ${operator} ${suffix}`)
 }
 
 /**
@@ -144,6 +167,10 @@ async function init () {
   learn(guesses[guesses.length - 1])
   const input = await promptOperate()
   operate(input, learntMethod)
+
+  learnFunction(guesses[guesses.length - 1])
+  console.log(learntFunction.toString())
+  console.log(learntFunction(input))
 }
 
 init()
