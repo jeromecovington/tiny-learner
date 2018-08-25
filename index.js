@@ -43,7 +43,7 @@ async function promptGuess () {
  *
  * @returns {boolean} Indicates whether operator & method have been guessed.
  */
-export function makeGuess ({ input, output }) {
+function makeGuess ({ input, output }) {
   let success = false
 
   if (input < output) {
@@ -119,7 +119,7 @@ async function promptOperate () {
  *
  * @returns {number} Output of operation.
  */
-export function operate (input, {operator, suffix}) {
+function operate (input, {operator, suffix}) {
   /* eslint-disable-next-line no-eval */
   const result = eval(`${input} ${operator} ${suffix}`)
 
