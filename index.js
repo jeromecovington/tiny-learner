@@ -14,7 +14,7 @@ let guesses = []
 
 // State Object with shape `{operator: <string>, suffix: <number>}`
 // representing method that has been learnt.
-const learntMethod = {}
+const learntParameters = {}
 
 // State representing function learned.
 let learntFunction
@@ -96,9 +96,9 @@ function makeGuess ({ input, output }) {
  * @returns {Object} Object with shape `{operator: <string>, suffix: <number>}`
  * confirming learnt mathematical method.
  */
-function learn ({ operator, suffix }) {
-  learntMethod.operator = operator
-  learntMethod.suffix = suffix
+function learnParameters ({ operator, suffix }) {
+  learntParameters.operator = operator
+  learntParameters.suffix = suffix
 
   return {
     operator,
@@ -118,7 +118,11 @@ function learn ({ operator, suffix }) {
  */
 function learnFunction ({ operator, suffix }) {
   /* eslint-disable-next-line no-new-func */
-  learntFunction = new Function('input', `return input ${operator} ${suffix}`)
+  learntFunction = new Function('input', `
+    const result = input ${operator} ${suffix};
+    console.log(input + ' ${operator} ' + ${suffix} + ' = ' + result);
+    return result;
+  `)
 }
 
 /**
@@ -130,25 +134,6 @@ async function promptOperate () {
   const input = await promptly.prompt('Function learned. Let\'s exercise the learned function.\nWhat is the input?')
 
   return parseInt(input, 10)
-}
-
-/**
- * Operate on input using the learnt mathematical method.
- *
- * @param {number} input - Input for the operation.
- * @param {Object} object - Parameter object.
- * @param {string} object.operator - String representing operation.
- * @param {number} object.suffix - The suffix for the method.
- *
- * @returns {number} Output of operation.
- */
-function operate (input, {operator, suffix}) {
-  /* eslint-disable-next-line no-eval */
-  const result = eval(`${input} ${operator} ${suffix}`)
-
-  console.log(`${input} ${operator} ${suffix} = ${result}`)
-
-  return result
 }
 
 /**
@@ -164,13 +149,11 @@ async function init () {
     hasGuessed = makeGuess(inOut)
   }
 
-  learn(guesses[guesses.length - 1])
-  const input = await promptOperate()
-  operate(input, learntMethod)
-
+  learnParameters(guesses[guesses.length - 1])
   learnFunction(guesses[guesses.length - 1])
+  const input = await promptOperate()
   console.log(learntFunction.toString())
-  console.log(learntFunction(input))
+  learntFunction(input)
 }
 
 init()
