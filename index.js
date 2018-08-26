@@ -12,10 +12,6 @@ const OPERATORS = {
 // representing methods guessed.
 let guesses = []
 
-// State Object with shape `{operator: <string>, suffix: <number>}`
-// representing method that has been learnt.
-const learntParameters = {}
-
 // State representing function learned.
 let learntFunction
 
@@ -87,26 +83,6 @@ function makeGuess ({ input, output }) {
 }
 
 /**
- * Affirms learnt method.
- *
- * @param {Object} object - Parameter object.
- * @param {string} object.operator - String representing operation.
- * @param {number} object.suffix - The suffix for the method.
- *
- * @returns {Object} Object with shape `{operator: <string>, suffix: <number>}`
- * confirming learnt mathematical method.
- */
-function learnParameters ({ operator, suffix }) {
-  learntParameters.operator = operator
-  learntParameters.suffix = suffix
-
-  return {
-    operator,
-    suffix
-  }
-}
-
-/**
  * Affirms learnt function.
  *
  * @param {Object} object - Parameter object.
@@ -149,7 +125,6 @@ async function init () {
     hasGuessed = makeGuess(inOut)
   }
 
-  learnParameters(guesses[guesses.length - 1])
   learnFunction(guesses[guesses.length - 1])
   const input = await promptOperate()
   console.log(learntFunction.toString())
