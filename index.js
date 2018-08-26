@@ -95,7 +95,8 @@ function learn ({ input, output }) {
  */
 function deriveFunction ({ operator, suffix }) {
   /* eslint-disable-next-line no-new-func */
-  learntFunction = new Function('input',
+  learntFunction = new Function(
+    'input',
     `
     const result = input ${operator} ${suffix};
     console.log(input + ' ${operator} ' + ${suffix} + ' = ' + result);
