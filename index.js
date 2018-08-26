@@ -26,7 +26,7 @@ let learntFunction
  * @returns {Object} Object with shape `{input: <number>, output: <number>}`.
  */
 async function promptGuess () {
-  const input = await promptly.prompt('What is the input?')
+  const input = await promptly.prompt('Let\'s keep learning. What is the input?')
   const output = await promptly.prompt('What is the output?')
 
   return {
@@ -127,7 +127,7 @@ function learnFunction ({ operator, suffix }) {
  * @returns {number} Number representing input.
  */
 async function promptOperate () {
-  const input = await promptly.prompt('What is the input?')
+  const input = await promptly.prompt('Function learned. Let\'s exercise the learned function.\nWhat is the input?')
 
   return parseInt(input, 10)
 }
