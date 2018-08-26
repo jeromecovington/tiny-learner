@@ -1,6 +1,6 @@
 const promptly = require('promptly')
 
-// The possible methods.
+// Arithmetic operators to learn.
 const OPERATORS = {
   add: '+',
   subtract: '-',
@@ -9,8 +9,8 @@ const OPERATORS = {
 }
 
 // State Array with members of shape `{operator: <string>, suffix: <number>}`
-// representing methods guessed.
-let guesses = []
+// representing parameters learned.
+let parameters = []
 
 // State representing function learned.
 let learntFunction
@@ -21,8 +21,8 @@ let learntFunction
  *
  * @returns {Object} Object with shape `{input: <number>, output: <number>}`.
  */
-async function promptGuess () {
-  const fragment = !guesses.length ? 'start' : 'keep'
+async function promptLearn () {
+  const fragment = !parameters.length ? 'start' : 'keep'
   const input = await promptly.prompt(`Let's ${fragment} learning. What is the input?`)
   const output = await promptly.prompt('What is the output?')
 
@@ -41,17 +41,17 @@ async function promptGuess () {
  * @param {number} object.input - Input for the training.
  * @param {number} object.output - Output for the training.
  *
- * @returns {boolean} Indicates whether operator & method have been guessed.
+ * @returns {boolean} Indicates whether operator & method have been learned.
  */
-function makeGuess ({ input, output }) {
+function learn ({ input, output }) {
   let success = false
 
   if (input < output) {
-    if (!guesses.length) {
-      guesses.push({ operator: OPERATORS.add, suffix: output - input })
-      guesses.push({ operator: OPERATORS.multiply, suffix: output / input })
+    if (!parameters.length) {
+      parameters.push({ operator: OPERATORS.add, suffix: output - input })
+      parameters.push({ operator: OPERATORS.multiply, suffix: output / input })
     } else {
-      guesses = guesses.filter(guess => {
+      parameters = parameters.filter(guess => {
         /* eslint-disable-next-line no-eval */
         return eval(`${input} ${guess.operator} ${guess.suffix} === ${output}`)
       })
@@ -61,11 +61,11 @@ function makeGuess ({ input, output }) {
   }
 
   if (input > output) {
-    if (!guesses.length) {
-      guesses.push({ operator: OPERATORS.subtract, suffix: input - output })
-      guesses.push({ operator: OPERATORS.divide, suffix: input / output })
+    if (!parameters.length) {
+      parameters.push({ operator: OPERATORS.subtract, suffix: input - output })
+      parameters.push({ operator: OPERATORS.divide, suffix: input / output })
     } else {
-      guesses.filter(guess => {
+      parameters.filter(guess => {
         /* eslint-disable-next-line no-eval */
         return eval(`${input} ${guess.operator} ${guess.suffix} === ${output}`)
       })
@@ -75,7 +75,7 @@ function makeGuess ({ input, output }) {
   }
 
   if (input === output) {
-    guesses.push({ operator: OPERATORS.add, suffix: 0 })
+    parameters.push({ operator: OPERATORS.add, suffix: 0 })
 
     success = true
   }
@@ -93,7 +93,7 @@ function makeGuess ({ input, output }) {
  * @returns {string} Object with shape `{operator: <string>, suffix: <number>}`
  * confirming learnt mathematical method.
  */
-function learnFunction ({ operator, suffix }) {
+function deriveFunction ({ operator, suffix }) {
   /* eslint-disable-next-line no-new-func */
   learntFunction = new Function('input',
     `
@@ -124,14 +124,14 @@ async function promptOperate () {
  * @returns {undefined} Undefined.
  */
 async function init () {
-  let hasGuessed = false
+  let hasLearned = false
 
-  while (!hasGuessed) {
-    const inOut = await promptGuess()
-    hasGuessed = makeGuess(inOut)
+  while (!hasLearned) {
+    const inOut = await promptLearn()
+    hasLearned = learn(inOut)
   }
 
-  learnFunction(guesses[guesses.length - 1])
+  deriveFunction(parameters[parameters.length - 1])
   const input = await promptOperate()
   learntFunction(input)
 }
