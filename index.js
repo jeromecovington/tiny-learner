@@ -22,7 +22,8 @@ let learntFunction
  * @returns {Object} Object with shape `{input: <number>, output: <number>}`.
  */
 async function promptGuess () {
-  const input = await promptly.prompt('Let\'s keep learning. What is the input?')
+  const fragment = !guesses.length ? 'start' : 'keep'
+  const input = await promptly.prompt(`Let's ${fragment} learning. What is the input?`)
   const output = await promptly.prompt('What is the output?')
 
   return {
@@ -94,11 +95,16 @@ function makeGuess ({ input, output }) {
  */
 function learnFunction ({ operator, suffix }) {
   /* eslint-disable-next-line no-new-func */
-  learntFunction = new Function('input', `
+  learntFunction = new Function('input',
+    `
     const result = input ${operator} ${suffix};
     console.log(input + ' ${operator} ' + ${suffix} + ' = ' + result);
     return result;
-  `)
+    `
+  )
+
+  console.log('Function learned:')
+  console.log(learntFunction.toString())
 }
 
 /**
@@ -107,7 +113,7 @@ function learnFunction ({ operator, suffix }) {
  * @returns {number} Number representing input.
  */
 async function promptOperate () {
-  const input = await promptly.prompt('Function learned. Let\'s exercise the learned function.\nWhat is the input?')
+  const input = await promptly.prompt('Let\'s exercise the learned function.\nWhat is the input?')
 
   return parseInt(input, 10)
 }
@@ -127,7 +133,6 @@ async function init () {
 
   learnFunction(guesses[guesses.length - 1])
   const input = await promptOperate()
-  console.log(learntFunction.toString())
   learntFunction(input)
 }
 
