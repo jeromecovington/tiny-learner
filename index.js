@@ -92,7 +92,7 @@ function learn ({ input, output }) {
 }
 
 /**
- * Affirms learnt function.
+ * Asserts learnt function.
  *
  * @param {Object} object - Parameter object.
  * @param {string} object.operator - String representing operation.
@@ -101,7 +101,7 @@ function learn ({ input, output }) {
  * @returns {string} Object with shape `{operator: <string>, suffix: <number>}`
  * confirming learnt mathematical method.
  */
-function deriveFunction ({ operator, suffix }) {
+function assertFunction ({ operator, suffix }) {
   /* eslint-disable-next-line no-new-func */
   learntFunction = new Function(
     'input',
@@ -140,7 +140,7 @@ async function init () {
     hasLearned = learn(inOut)
   }
 
-  deriveFunction(parameters[parameters.length - 1])
+  assertFunction(parameters[parameters.length - 1])
   const input = await promptOperate()
   learntFunction(input)
 }
