@@ -46,46 +46,32 @@ async function promptLearn () {
 function learn ({ input, output }) {
   let success = false
 
-  if (input < output) {
-    if (!parameters.length) {
-      parameters.push({ operator: OPERATORS.add, suffix: output - input })
-      parameters.push({ operator: OPERATORS.multiply, suffix: output / input })
-    } else {
-      parameters = parameters.filter(guess => {
-        /* eslint-disable-next-line no-eval */
-        return eval(`${input} ${guess.operator} ${guess.suffix} === ${output}`)
-      })
-
-      if (parameters.length) {
-        success = true
-      } else {
-        console.log('Hmmm, something didn\'t make sense. Can we try again?')
-      }
-    }
-  }
-
-  if (input > output) {
-    if (!parameters.length) {
-      parameters.push({ operator: OPERATORS.subtract, suffix: input - output })
-      parameters.push({ operator: OPERATORS.divide, suffix: input / output })
-    } else {
-      parameters = parameters.filter(guess => {
-        /* eslint-disable-next-line no-eval */
-        return eval(`${input} ${guess.operator} ${guess.suffix} === ${output}`)
-      })
-
-      if (parameters.length) {
-        success = true
-      } else {
-        console.log('Hmmm, something didn\'t make sense. Can we try again?')
-      }
-    }
-  }
-
   if (input === output) {
     parameters.push({ operator: OPERATORS.add, suffix: 0 })
 
     success = true
+  }
+
+  if (!parameters.length) {
+    if (input < output) {
+      parameters.push({ operator: OPERATORS.add, suffix: output - input })
+      parameters.push({ operator: OPERATORS.multiply, suffix: output / input })
+    }
+    if (input > output) {
+      parameters.push({ operator: OPERATORS.subtract, suffix: input - output })
+      parameters.push({ operator: OPERATORS.divide, suffix: input / output })
+    }
+  } else {
+    parameters = parameters.filter(guess => {
+      /* eslint-disable-next-line no-eval */
+      return eval(`${input} ${guess.operator} ${guess.suffix} === ${output}`)
+    })
+
+    if (parameters.length) {
+      success = true
+    } else {
+      console.log('Hmmm, something didn\'t make sense. Can we try again?')
+    }
   }
 
   return success
