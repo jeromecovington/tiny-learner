@@ -56,7 +56,11 @@ function learn ({ input, output }) {
         return eval(`${input} ${guess.operator} ${guess.suffix} === ${output}`)
       })
 
-      success = true
+      if (parameters.length) {
+        success = true
+      } else {
+        console.log('Hmmm, something didn\'t make sense. Can we try again?')
+      }
     }
   }
 
@@ -65,12 +69,16 @@ function learn ({ input, output }) {
       parameters.push({ operator: OPERATORS.subtract, suffix: input - output })
       parameters.push({ operator: OPERATORS.divide, suffix: input / output })
     } else {
-      parameters.filter(guess => {
+      parameters = parameters.filter(guess => {
         /* eslint-disable-next-line no-eval */
         return eval(`${input} ${guess.operator} ${guess.suffix} === ${output}`)
       })
 
-      success = true
+      if (parameters.length) {
+        success = true
+      } else {
+        console.log('Hmmm, something didn\'t make sense. Can we try again?')
+      }
     }
   }
 
