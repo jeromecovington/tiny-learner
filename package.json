@@ -15,6 +15,11 @@
   ],
   "author": "Jerome T.K. Covington",
   "license": "ISC",
+  "scripts": {
+    "test": "lint",
+    "lint": "standard **/*.js",
+    "prepush": "npm test -q"
+  },
   "devDependencies": {
     "chai": "^4.1.2",
     "eslint-config-standard-jsdoc": "^0.3.2",
