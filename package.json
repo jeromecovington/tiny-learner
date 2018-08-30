@@ -1,11 +1,8 @@
 {
   "name": "tiny-learner",
   "version": "0.0.1",
-  "description": "Learns mathematical operations given an adequate set of inputs & outputs.",
+  "description": "Learns mathematical operations given adequate examples of inputs & outputs.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "ML",
     "machine-learning",
@@ -16,15 +13,12 @@
   "author": "Jerome T.K. Covington",
   "license": "ISC",
   "scripts": {
-    "test": "lint",
-    "lint": "standard **/*.js",
+    "test": "standard **/*.js",
     "prepush": "npm test -q"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
     "eslint-config-standard-jsdoc": "^0.3.2",
     "husky": "^0.14.3",
-    "mocha": "^5.1.1",
     "standard": "^11.0.1"
   },
   "dependencies": {
