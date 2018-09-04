@@ -27,8 +27,8 @@ async function promptLearn () {
   const output = await promptly.prompt('What is the output?')
 
   return {
-    input: parseInt(input, 10),
-    output: parseInt(output, 10)
+    input: parseFloat(input, 10),
+    output: parseFloat(output, 10)
   }
 }
 
@@ -110,7 +110,7 @@ function assertFunction ({ operator, suffix }) {
 async function promptOperate () {
   const input = await promptly.prompt('Let\'s exercise the learned function.\nWhat is the input?')
 
-  return parseInt(input, 10)
+  return parseFloat(input, 10)
 }
 
 /**
